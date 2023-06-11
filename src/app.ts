@@ -10,5 +10,5 @@ app.use(express.json())
 app.use("/developers", developersRoutes)
 
 app.use(handleErrors);
-// ÚLTIMA IMPORTAÇÃO SEMPRE
+
 export default app;
