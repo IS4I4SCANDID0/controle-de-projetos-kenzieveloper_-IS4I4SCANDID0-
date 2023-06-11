@@ -1,9 +1,13 @@
 import { Router } from "express";
-import { createDevelopersController } from "../controllers/developers.controller";
+import { createDeveloperInfoController, createDevelopersController, erasesDevelopersController, retrieveDevelopersController } from "../controllers/developers.controller";
+import { verifyDevIdParams } from "../middlewares/verifyDevIdParams.middlewares";
 
 const developersRoutes: Router = Router()
 
 developersRoutes.post("", createDevelopersController)
-developersRoutes.post("/:id/infos",)
+developersRoutes.get("/:id", verifyDevIdParams,retrieveDevelopersController);
+developersRoutes.delete("/:id", verifyDevIdParams,erasesDevelopersController);
+
+developersRoutes.post("/:id/infos", verifyDevIdParams,createDeveloperInfoController)
 
 export default developersRoutes

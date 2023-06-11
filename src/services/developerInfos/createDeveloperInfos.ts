@@ -5,53 +5,71 @@ import AppError from "../../error";
 import format from "pg-format";
 
 const createDeveloperInfosService = async (developerId: number, developerInfosRequest: TDeveloperInfosRequest): Promise<TDeveloperInfos> => {
-  const queryStringSelectDev: string = `
-    SELECT
-      *
-    FROM
-      developers
-    WHERE
-      id = $1
-  `;
-  const queryConfigSelectDev: QueryConfig = {
-    text: queryStringSelectDev,
-    values: [developerId],
-  };
-
-  const queryResultSelectDev: QueryResult = await client.query(queryConfigSelectDev);
-
-  if (queryResultSelectDev.rowCount === 0) {
-    throw new AppError("Developer not found", 404);
-  }
-
-  const queryFormatDevInfos: string = format(
+  const queryFormatDeveloperInfo: string = format(
     `
-      INSERT INTO 
-        developerInfos (%I)
-      VALUES 
-        (%L)
-      RETURNING *; 
+      INSERT INTO
+        "developerInfos" ("developerSince", "preferredOS", "developerId")
+      VALUES
+        (%L, %L, %L) 
+      RETURNING *;
     `,
-    Object.keys(developerInfosRequest),
-    Object.values(developerInfosRequest)
+    developerInfosRequest.developerSince,
+    developerInfosRequest.preferredOS,
+    developerId
   );
-  const queryResultDeveloperInfos: QueryResult = await client.query(queryFormatDevInfos)
+  const queryResultDeveloperInfos: QueryResult<TDeveloperInfos> = await client.query(queryFormatDeveloperInfo);
 
   const queryStringUpdateDevInfo: string = `
     UPDATE
-      developerInfos
+      "developerInfos"
     SET
-      "developerId" = $1
+     "developerId" = $1
     WHERE
       id = $2
   `
   const queryConfigUpdateDev: QueryConfig = {
     text: queryStringUpdateDevInfo,
-    values: [queryResultDeveloperInfos.rows[0].id, developerId]
+    values: [developerId, queryResultDeveloperInfos.rows[0].id]
   }
   await client.query(queryConfigUpdateDev)
- 
+
   return queryResultDeveloperInfos.rows[0]
 };
 
 export { createDeveloperInfosService }
+
+
+///// const queryStringUpdateDevInfo: string = 
+///// `
+/////   //! UPDATE
+/////   //!   "developerInfos"
+/////   //! SET
+/////   //!   "developerId" = $1
+/////   //! WHERE
+/////   //!   id = $2
+///// `
+///// const queryConfigUpdateDev: QueryConfig = {
+/////   text: queryStringUpdateDevInfo,
+/////   values: [developerId, queryResultSelectDev.rows[0].id]
+///// }
+///// await client.query(queryConfigUpdateDev)
+///
+///// const queryInsertDevInfos: string = format(
+/////   `
+/////     !INSERT INTO 
+/////     !  "developerInfos" ("developerSince", "preferredOS", "developerId")
+/////     !VALUES 
+/////     !  (%L, %L, %L)
+/////     !RETURNING *; 
+/////   `,
+/////   developerInfosRequest.developerSince,
+/////   developerInfosRequest.preferredOS,
+/////   queryResultSelectDev.rows[0].id
+///// );
+///// const queryResultInsertDevInfos: QueryResult = await client.query(queryInsertDevInfos)
+///
+///// return queryResultInsertDevInfos.rows[0]
+
+
+
+
