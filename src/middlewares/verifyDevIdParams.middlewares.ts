@@ -4,14 +4,14 @@ import AppError from "../error";
 import { client } from "../database/database";
 
 const verifyDevIdParams = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-  let developerId: number = parseInt(request.params.id)
-  
-  if(request.method === "POST" && request.baseUrl === "/developers/:id/infos") {
-    developerId = request.body.developerId
+  let developerId: number = parseInt(request.params.id);
+
+  if ((request.method === "POST" || request.method === "PATCH") && request.baseUrl === "/developers/:id/infos"
+  ) {
+    developerId = request.body.developerId;
   }
-  
-  const queryStringSelectDev: string = 
-  `
+
+  const queryStringSelectDev: string = `
     SELECT
       *
     FROM
@@ -32,4 +32,4 @@ const verifyDevIdParams = async (request: Request, response: Response, next: Nex
   return next();
 };
 
-export {verifyDevIdParams}
+export { verifyDevIdParams };

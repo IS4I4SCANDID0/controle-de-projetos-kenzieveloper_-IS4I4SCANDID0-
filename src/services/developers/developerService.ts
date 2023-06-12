@@ -20,7 +20,7 @@ const createDevelopersService = async (developerData: TDeveloperRequest): Promis
   );
 
   const queryResult: QueryResult<TDeveloper> = await client.query(formatString);
-  // console.log(queryResult.rows[0])
+  
   return queryResult.rows[0];
 };
 
@@ -38,7 +38,7 @@ const retrieveDevelopers = async (developerId: string): Promise<TGetDeveloperByI
       LEFT JOIN
         "developerInfos" di ON di."developerId" = de."id"
       WHERE
-      de."id" = $1;
+        de."id" = $1;
     `,
     [developerId]
   );
