@@ -1,5 +1,5 @@
 import format from "pg-format";
-import { TDeveloper, TDeveloperRequest, TGetDeveloperById, TGetDeveloperByIdRenamed } from "../../interfaces/developers.interfaces";
+import { TDeveloper, TDeveloperRequest, TDeveloperUpdate, TGetDeveloperByIdRenamed } from "../../interfaces/developers.interfaces";
 import { QueryResult } from "pg";
 import { client } from "../../database/database";
 
@@ -47,12 +47,23 @@ const retrieveDevelopers = async (developerId: string): Promise<TGetDeveloperByI
   return developerFullProfile;
 };
   
+const updateDevelopers = async (developerData: TDeveloperUpdate, developerId: string): Promise<TDeveloper> => {
+  const queryFormat: string = format(
+    `UPDATE developers SET (%I) = ROW(%L) WHERE "id" = $1 RETURNING *;`,
+    Object.keys(developerData),
+    Object.values(developerData)
+  );
+  const queryResult: QueryResult = await client.query(queryFormat, [developerId]) 
+
+  return queryResult.rows[0]
+}
+
 
 const erasesDevelopers = async (developerId: string): Promise<void> => {
   await client.query(`DELETE FROM developers WHERE "id"= $1;`, [developerId]);
 };
 
-export default { createDevelopersService, retrieveDevelopers, erasesDevelopers };
+export default { createDevelopersService, retrieveDevelopers, updateDevelopers,erasesDevelopers };
 
   
  

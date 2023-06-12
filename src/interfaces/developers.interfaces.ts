@@ -6,6 +6,8 @@ type TDeveloper = {
 
 type TDeveloperRequest = Omit<TDeveloper, "id">
 
+type TDeveloperUpdate = TDeveloperRequest
+
 type TDeveloperInfos = {
   id: number
   developerSince: Date 
@@ -31,4 +33,4 @@ type TGetDeveloperByIdRenamed = {
   developerInfoPreferredOS: string | null
 }
 
-export { TDeveloper, TDeveloperRequest, TDeveloperInfos, TDeveloperInfosRequest, TGetDeveloperByIdRenamed, TGetDeveloperById }
+export { TDeveloper, TDeveloperRequest, TDeveloperInfos, TDeveloperInfosRequest, TGetDeveloperByIdRenamed, TGetDeveloperById, TDeveloperUpdate}
