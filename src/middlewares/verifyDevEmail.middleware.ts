@@ -18,5 +18,3 @@ const verifyEmail = async(request: Request, response: Response, next: NextFuncti
 };
 
 export { verifyEmail }
-
-// *** ASSISTIR A DEMO DE REVISÃO A PRATIR DO MIN 32
