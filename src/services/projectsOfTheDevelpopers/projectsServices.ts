@@ -1,5 +1,5 @@
 import format from "pg-format";
-import { TGetProjectByIdRenamed, TProject, TProjectRequest } from "../../interfaces/projects.interfaces";
+import { TGetProjectByIdRenamed, TProject, TProjectRequest, TProjectUpdate } from "../../interfaces/projects.interfaces";
 import { QueryResult } from "pg";
 import { client } from "../../database/database";
 
@@ -24,8 +24,6 @@ const createProjectServices = async (projectData: TProjectRequest): Promise<TPro
 };
 
 const retrieveProjects = async (projectId: number): Promise<TGetProjectByIdRenamed> => {
-  // const projecId = reque
-
   const queryResult: QueryResult<TGetProjectByIdRenamed> = await client.query(
     `
       SELECT
@@ -48,6 +46,15 @@ const retrieveProjects = async (projectId: number): Promise<TGetProjectByIdRenam
   return projectProfile;
 }
 
+const updateProjects = async (projectData: TProjectUpdate, projectId: string): Promise<TProject> => {
+  const queryFormat: string = format(
+    `UPDATE projects SET (%I) = ROW(%L) WHERE "id" = $1 RETURNING *;`,
+    Object.keys(projectData),
+    Object.values(projectData)
+  );
+  const queryResult: QueryResult = await client.query(queryFormat, [projectId]);
+  return queryResult.rows[0];
+}
 
 // "id" SERIAL PRIMARY KEY,
 // 	"name" VARCHAR(50) NOT NULL,
@@ -65,4 +72,4 @@ const retrieveProjects = async (projectId: number): Promise<TGetProjectByIdRenam
 //   "projectDeveloperName": "Ugo Roveda"
 // }
 
-export default { createProjectServices, retrieveProjects }
+export default { createProjectServices, retrieveProjects, updateProjects }

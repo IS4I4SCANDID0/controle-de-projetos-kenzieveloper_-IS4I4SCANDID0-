@@ -17,8 +17,13 @@ const retrieveProjectController = async (request: Request, response: Response): 
   return response.status(200).json(project)
 }
 
+const updateProjectController = async (request: Request, response: Response): Promise<Response> => {
+  const project: TProject = await projectsServices.updateProjects(request.body, request.params.id);
+  return response.status(200).json(project) 
+}
 
 export {
   createProjectController,
-  retrieveProjectController
+  retrieveProjectController,
+  updateProjectController
 }

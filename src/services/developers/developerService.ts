@@ -20,7 +20,7 @@ const createDevelopersService = async (developerData: TDeveloperRequest): Promis
   );
 
   const queryResult: QueryResult<TDeveloper> = await client.query(formatString);
-  
+
   return queryResult.rows[0];
 };
 
@@ -43,27 +43,22 @@ const retrieveDevelopers = async (developerId: string): Promise<TGetDeveloperByI
     [developerId]
   );
   const developerFullProfile: TGetDeveloperByIdRenamed = queryResult.rows[0];
-  
+
   return developerFullProfile;
 };
-  
+
 const updateDevelopers = async (developerData: TDeveloperUpdate, developerId: string): Promise<TDeveloper> => {
-  const queryFormat: string = format(
-    `UPDATE developers SET (%I) = ROW(%L) WHERE "id" = $1 RETURNING *;`,
-    Object.keys(developerData),
+  const queryFormat: string = format(`UPDATE developers SET (%I) = ROW(%L) WHERE "id" = $1 RETURNING *;`, 
+    Object.keys(developerData), 
     Object.values(developerData)
   );
-  const queryResult: QueryResult = await client.query(queryFormat, [developerId]) 
+  const queryResult: QueryResult = await client.query(queryFormat, [developerId]);
 
-  return queryResult.rows[0]
-}
-
+  return queryResult.rows[0];
+};
 
 const erasesDevelopers = async (developerId: string): Promise<void> => {
   await client.query(`DELETE FROM developers WHERE "id"= $1;`, [developerId]);
 };
 
-export default { createDevelopersService, retrieveDevelopers, updateDevelopers,erasesDevelopers };
-
-  
- 
+export default { createDevelopersService, retrieveDevelopers, updateDevelopers, erasesDevelopers };

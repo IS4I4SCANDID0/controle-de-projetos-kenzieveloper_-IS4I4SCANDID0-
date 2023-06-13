@@ -5,7 +5,11 @@ import { TProject } from "../interfaces/projects.interfaces";
 import AppError from "../error";
 
 const verifyIdProject = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-  const projectId = request.params.id;
+  let projectId: number = parseInt(request.params.id);
+
+  if(request.method === "PATCH" && request.baseUrl === "/projects/:id") {
+    projectId = request.body.projectId; 
+  }
 
   const queryString: string = `
     SELECT
