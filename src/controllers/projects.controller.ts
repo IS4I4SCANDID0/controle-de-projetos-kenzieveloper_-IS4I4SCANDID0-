@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { TGetProjectById, TGetProjectByIdRenamed, TProject, TProjectRequest } from "../interfaces/projects.interfaces";
+import { TGetProjectByIdRenamed, TProject, TProjectRequest } from "../interfaces/projects.interfaces";
 import projectsServices from "../services/projectsOfTheDevelpopers/projectsServices";
-import { TGetDeveloperByIdRenamed } from "../interfaces/developers.interfaces";
 
 const createProjectController = async (request: Request, response: Response): Promise<Response> => {
   const projectData: TProjectRequest = request.body;

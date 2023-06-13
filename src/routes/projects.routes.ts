@@ -2,7 +2,6 @@ import { Router } from "express";
 import { verifyDevIdParams } from "../middlewares/verifyDevIdParams.middlewares";
 import { createProjectController, retrieveProjectController, updateProjectController } from "../controllers/projects.controller";
 import { verifyIdProject } from "../middlewares/verifyIdProject.middleware";
-import { updateDeveloperController } from "../controllers/developers.controller";
 
 const projectsRoutes: Router = Router();
 

@@ -58,20 +58,4 @@ const updateProjects = async (projectData: TProjectUpdate, projectId: number): P
   return queryResult.rows[0];
 }
 
-// "id" SERIAL PRIMARY KEY,
-// 	"name" VARCHAR(50) NOT NULL,
-// 	"description" TEXT,
-// 	"repository" VARCHAR(120) NOT NULL,
-// 	"startDate" DATE NOT NULL,
-// 	"endDate" DATE,
-// {
-//   "projectId": 1,
-//   "projectName": "Projeto 1",
-//   "projectDescription": "Projeto fullstack",
-//   "projectRepository": "url.com.br",
-//   "projectStartDate": "2023-12-02T03:00:00.000Z",
-//   "projectEndDate": null,
-//   "projectDeveloperName": "Ugo Roveda"
-// }
-
 export default { createProjectServices, retrieveProjects, updateProjects }

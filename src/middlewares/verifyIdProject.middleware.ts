@@ -1,15 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { QueryConfig, QueryResult } from "pg";
 import { client } from "../database/database";
-import { TProject } from "../interfaces/projects.interfaces";
 import AppError from "../error";
 
 const verifyIdProject = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
   const projectId: number = request.body.projectId ? request.body.projectId : parseInt(request.params.id);
-
-  // if(request.method === "PATCH" && request.baseUrl === "/projects/:id") {
-  //   projectId = ; 
-  // }
 
   const queryString: string = `
     SELECT
