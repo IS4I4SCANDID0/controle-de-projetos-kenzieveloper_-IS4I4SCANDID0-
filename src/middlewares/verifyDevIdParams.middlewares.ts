@@ -4,11 +4,7 @@ import AppError from "../error";
 import { client } from "../database/database";
 
 const verifyDevIdParams = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-  let developerId: number = parseInt(request.params.id);
-
-  if (request.method === "POST" && request.baseUrl === "/developers/:id/infos") {
-    developerId = request.body.developerId;
-  }
+  const developerId: number = request.body.developerId ? request.body.developerId : parseInt(request.params.id)
 
   const queryStringSelectDev: string = `
     SELECT
@@ -24,7 +20,7 @@ const verifyDevIdParams = async (request: Request, response: Response, next: Nex
   };
 
   const queryResultSelectDev: QueryResult = await client.query(queryConfigSelectDev);
-
+  
   if (queryResultSelectDev.rowCount === 0) {
     throw new AppError("Developer not found", 404);
   }

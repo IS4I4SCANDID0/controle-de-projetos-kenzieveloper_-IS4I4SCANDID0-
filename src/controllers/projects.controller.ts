@@ -18,7 +18,7 @@ const retrieveProjectController = async (request: Request, response: Response): 
 }
 
 const updateProjectController = async (request: Request, response: Response): Promise<Response> => {
-  const project: TProject = await projectsServices.updateProjects(request.body, request.params.id);
+  const project: TProject = await projectsServices.updateProjects(request.body, parseInt(request.params.id));
   return response.status(200).json(project) 
 }
 

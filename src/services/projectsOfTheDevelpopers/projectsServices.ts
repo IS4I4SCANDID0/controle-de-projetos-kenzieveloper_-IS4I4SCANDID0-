@@ -32,7 +32,8 @@ const retrieveProjects = async (projectId: number): Promise<TGetProjectByIdRenam
         p."description" as "projectDescription",
         p."repository" as "projectRepository", 
         p."startDate" as "projectStartDate",
-        p."endDate" as "projectEndDate"
+        p."endDate" as "projectEndDate",
+        de."name" as "projectDeveloperName"
       FROM 
         projects p
       LEFT JOIN
@@ -46,7 +47,8 @@ const retrieveProjects = async (projectId: number): Promise<TGetProjectByIdRenam
   return projectProfile;
 }
 
-const updateProjects = async (projectData: TProjectUpdate, projectId: string): Promise<TProject> => {
+const updateProjects = async (projectData: TProjectUpdate, projectId: number): Promise<TProject> => {
+  
   const queryFormat: string = format(
     `UPDATE projects SET (%I) = ROW(%L) WHERE "id" = $1 RETURNING *;`,
     Object.keys(projectData),
